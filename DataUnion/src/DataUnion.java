@@ -190,6 +190,17 @@ public class DataUnion {
 				} else if (args[i].equals("-t")) {
 					i++;
 					DataAggregation.RepresentativeDataType = args[i];
+				} else if (args[i].equals("-pr")) {
+					i++;
+					if (args[i].equals("no")) {
+						DA_EdgeGroups.preferReal = false;
+					} else if (args[i].equals("yes")) {
+						DA_EdgeGroups.preferReal = true;
+					} else {
+						System.out.println("Error: unknown parameter: " + args[i]);
+						printParameterInfo();
+						System.exit(-1);
+					}
 				} else {
 					System.out.println("Error: unknown parameter: " + args[i]);
 					printParameterInfo();
@@ -240,6 +251,7 @@ public class DataUnion {
 		System.out.println(" -i = Path of Inputfile (required & multi)");
 		System.out.println(" -o = Path of Outputfile (required)");
 		System.out.println(" -d = distance in meters to a new Cell with same Ch & SC (default: 5000)");
+		System.out.println(" -pr = prefer Real Data at aggregation ([yes|no] default: yes)");
 		System.out.println(" -g = selection of group (default: all");
 		System.out.println("    all  = no selection, use all datas (-r & -t not needed)");
 		System.out.println("    med- = median (less preferred)");

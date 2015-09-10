@@ -39,8 +39,38 @@ public class DataAggregation {
 			for (String key : EdgeIds) {
 				DA_EdgeGroups gg = EdgeGroups.get(key);
 				
-				for ( int j = 0; j < gg.SelectedDataAggregationGroup.Datasets.size(); j++) {
-					Dataset od = gg.SelectedDataAggregationGroup.Datasets.get(j);
+				for ( int j = 0; j < gg.SelectedDataAggregationGroup_down.Datasets.size(); j++) {
+					Dataset od = gg.SelectedDataAggregationGroup_down.Datasets.get(j);
+					
+					bWriter.write(od.type + ",");
+					bWriter.write(od.down_up + ",");
+					bWriter.write(od.timestamp + ",");
+					bWriter.write(od.matched_latitude + ",");
+					bWriter.write(od.matched_longitude + ",");
+					bWriter.write(od.unmatched_latitude + ",");
+					bWriter.write(od.unmatched_longitude + ",");
+					bWriter.write(od.startNode_id + ",");
+					bWriter.write(od.endNode_id + ",");
+					bWriter.write(od.edge_id_str + ",");
+					bWriter.write(od.length_in_edge + ",");
+					bWriter.write(od.length_of_edge + ",");
+					bWriter.write(od.matched_distribution_in_WayPart + ",");
+					bWriter.write(od.datarate + ",");
+					bWriter.write(od.delay + ",");
+					bWriter.write(od.loss_rate + ",");
+					bWriter.write(od.matchedLinkNr + ",");
+					bWriter.write(od.WCDMA_Ch + ",");
+					bWriter.write(od.WCDMA_SC + ",");
+					bWriter.write(od.GSM_CellId + ",");
+					bWriter.write(od.GSM_LAC + ",");
+					bWriter.write(od.CellId + ",");
+					bWriter.write("" + od.matchedLinkNrGlobal);
+
+					bWriter.newLine();
+				}
+				
+				for ( int j = 0; j < gg.SelectedDataAggregationGroup_up.Datasets.size(); j++) {
+					Dataset od = gg.SelectedDataAggregationGroup_up.Datasets.get(j);
 					
 					bWriter.write(od.type + ",");
 					bWriter.write(od.down_up + ",");
@@ -93,8 +123,53 @@ public class DataAggregation {
 			for (String key : EdgeIds) {
 				DA_EdgeGroups gg = EdgeGroups.get(key);
 
-				for( String s : gg.Vector_matchedLinkNrGlobal ) {
-					DA_DatasetGroup g = gg.Groups.get(s);
+				for( Integer nr : gg.Vector_matchedLinkNrGlobal_down ) {
+					DA_DatasetGroup g = gg.Groups_down.get(nr);
+
+					bWriter.write(g.type + ",");
+					bWriter.write(g.down_up + ",");
+					bWriter.write(g.edge_id_str + ",");
+					bWriter.write(g.matchedLinkNrGlobal + ",");
+					bWriter.write(g.count + ",");
+					
+					bWriter.write(g.count_datarate + ",");
+					bWriter.write(g.min_datarate + ",");
+					bWriter.write(g.max_datarate + ",");
+					bWriter.write(g.avg_datarate + ",");
+					bWriter.write(g.stde_datarate + ",");
+					bWriter.write(g.min_stde_datarate + ",");
+					bWriter.write(g.max_stde_datarate + ",");
+					bWriter.write(g.avg_stde_datarate + ",");
+					bWriter.write(g.med_datarate + ",");
+					bWriter.write(g.way_weight_datarate + ",");
+					
+					bWriter.write(g.count_delay + ",");
+					bWriter.write(g.min_delay + ",");
+					bWriter.write(g.max_delay + ",");
+					bWriter.write(g.avg_delay + ",");
+					bWriter.write(g.stde_delay + ",");
+					bWriter.write(g.min_stde_delay + ",");
+					bWriter.write(g.max_stde_delay + ",");
+					bWriter.write(g.avg_stde_delay + ",");
+					bWriter.write(g.med_delay + ",");
+					bWriter.write(g.way_weight_delay + ",");
+					
+					bWriter.write(g.count_loss_rate + ",");
+					bWriter.write(g.min_loss_rate + ",");
+					bWriter.write(g.max_loss_rate + ",");
+					bWriter.write(g.avg_loss_rate + ",");
+					bWriter.write(g.stde_loss_rate + ",");
+					bWriter.write(g.min_stde_loss_rate + ",");
+					bWriter.write(g.max_stde_loss_rate + ",");
+					bWriter.write(g.avg_stde_loss_rate + ",");
+					bWriter.write(g.med_loss_rate + ",");
+					bWriter.write(g.way_weight_loss_rate + "");
+					
+					bWriter.newLine();
+				}
+				
+				for( Integer s : gg.Vector_matchedLinkNrGlobal_up ) {
+					DA_DatasetGroup g = gg.Groups_up.get(s);
 
 					bWriter.write(g.type + ",");
 					bWriter.write(g.down_up + ",");
@@ -171,16 +246,28 @@ public class DataAggregation {
 		return EdgeGroups.get(s);
 	}
 	
-	private DA_DatasetGroup getGroup (Dataset ds, DA_EdgeGroups gg) {
-		if (gg.Groups.containsKey(ds.matchedLinkNrGlobal + ds.down_up) == false) {
-			DA_DatasetGroup g = new DA_DatasetGroup(ds);
-			gg.Groups.put(ds.matchedLinkNrGlobal + ds.down_up, g);
-			gg.Vector_matchedLinkNrGlobal.add(ds.matchedLinkNrGlobal + ds.down_up);
+	private DA_DatasetGroup getGroup(Dataset ds, DA_EdgeGroups gg) {
+		if (ds.down_up.equals("down")) {
+			if (gg.Groups_down.containsKey(ds.matchedLinkNrGlobal) == false) {
+				DA_DatasetGroup g = new DA_DatasetGroup(ds);
+				gg.Groups_down.put(ds.matchedLinkNrGlobal, g);
+				gg.Vector_matchedLinkNrGlobal_down.add(ds.matchedLinkNrGlobal);
 
-			countGroups++;
+				countGroups++;
+			}
+			return gg.Groups_down.get(ds.matchedLinkNrGlobal);			
+		} else {
+			if (gg.Groups_up.containsKey(ds.matchedLinkNrGlobal) == false) {
+				DA_DatasetGroup g = new DA_DatasetGroup(ds);
+				gg.Groups_up.put(ds.matchedLinkNrGlobal, g);
+				gg.Vector_matchedLinkNrGlobal_up.add(ds.matchedLinkNrGlobal);
+
+				countGroups++;
+			}
+			return gg.Groups_up.get(ds.matchedLinkNrGlobal);
 		}
-		return gg.Groups.get(ds.matchedLinkNrGlobal + ds.down_up);
 	}
+
 }
 
 
