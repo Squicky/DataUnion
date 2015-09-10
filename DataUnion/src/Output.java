@@ -132,15 +132,7 @@ public class Output {
 			}
 			
 			bReader.close();
-		} catch (Exception e) {
-			if (line != null) {
-				line = "" + line;				
-			}
-			
-			if (Columns != null) {
-				String s = Columns[0];
-			}
-			
+		} catch (Exception e) {			
 			System.out.println("Error: \n" + e.toString());
 			System.exit(-1);
 		}

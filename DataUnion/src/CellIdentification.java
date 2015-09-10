@@ -1,5 +1,5 @@
 
-public class CellId {
+public class CellIdentification {
 
 	public int CellID = -1;
 	
@@ -15,7 +15,7 @@ public class CellId {
 
 	public static double DistanceToNextCell = 5000;
 	
-	public CellId(int id, Dataset od) {
+	public CellIdentification(int id, Dataset od) {
 		this.CellID = id;
 		this.WCDMA_Ch = od.WCDMA_Ch;
 		this.WCDMA_SC = od.WCDMA_SC;
@@ -37,7 +37,7 @@ public class CellId {
 			lon /= 2;
 			lon += min_longitude;
 			
-			double d = CellId.getDistance(lat, lon, od.matched_latitude, od.matched_longitude);
+			double d = CellIdentification.getDistance(lat, lon, od.matched_latitude, od.matched_longitude);
 			
 			if ( d <= DistanceToNextCell ) {
 				return true;

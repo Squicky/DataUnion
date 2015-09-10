@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class DataUnion {
 	private Vector<Output> Outputs = new Vector<Output>();
-	private Vector<CellId> CellIds = new Vector<CellId>();
+	private Vector<CellIdentification> CellIds = new Vector<CellIdentification>();
 	private DataAggregation dataAggregation = new DataAggregation();
 	private Vector<String> inputFiles = new Vector<String>();
 	private String outputFile = "";
@@ -28,6 +28,7 @@ public class DataUnion {
 		s.setMatchedLinkNrGlobal();
 
 		s.aggreate();
+		
 		s.dataAggregation.writeSumToFile(s.outputFile + ".Sum.csv");
 		
 		if (DataAggregation.GroupSelection.equals("all")) {
@@ -46,22 +47,22 @@ public class DataUnion {
 			Output op = Outputs.get(i);
 
 			for ( int j = 0; j < op.Datasets.size(); j++) {
-				Dataset od = op.Datasets.get(j);
+				Dataset ds = op.Datasets.get(j);
 
 				boolean isInGroup = false;
 
 				for (int k = 0; k < CellIds.size(); k++) {
-					CellId cid = CellIds.get(k);
+					CellIdentification cid = CellIds.get(k);
 
-					if (cid.isInGroup(od)) {
+					if (cid.isInGroup(ds)) {
 						isInGroup = true;
-						cid.addToGroup(od);
+						cid.addToGroup(ds);
 						break;
 					}
 				}
 
 				if (isInGroup == false) {
-					CellId cid = new CellId(CellIds.size(), od);
+					CellIdentification cid = new CellIdentification(CellIds.size(), ds);
 					CellIds.add(cid);
 				}
 			}
@@ -179,7 +180,7 @@ public class DataUnion {
 					outputFile = args[i];
 				} else if (args[i].equals("-d")) {
 					i++;
-					CellId.DistanceToNextCell = Double.parseDouble(args[i]);
+					CellIdentification.DistanceToNextCell = Double.parseDouble(args[i]);
 				} else if (args[i].equals("-r")) {
 					i++;
 					DataAggregation.RepresentativeCalculationType = args[i];
@@ -264,6 +265,7 @@ public class DataUnion {
 	public static boolean isDouble(String str)  
 	{
 		try {
+			@SuppressWarnings("unused")
 			double d = Double.parseDouble(str);
 		}
 		catch(Exception e) {

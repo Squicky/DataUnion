@@ -4,7 +4,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 
-public class DataAggregationGroup {
+public class DA_DatasetGroup {
 	public long objID;
 	public static long objCount = 0;
 	
@@ -65,9 +65,9 @@ public class DataAggregationGroup {
 
 	public double RepresentativeValue = DEFAULT_VALUE;
 
-	public DataAggregationGroup(Dataset ds) {
-		this.objID = DataAggregationGroup.objCount;
-		DataAggregationGroup.objCount++;
+	public DA_DatasetGroup(Dataset ds) {
+		this.objID = DA_DatasetGroup.objCount;
+		DA_DatasetGroup.objCount++;
 		
 		type = ds.type;
 		down_up = ds.down_up;

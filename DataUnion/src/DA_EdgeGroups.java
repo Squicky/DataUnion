@@ -1,29 +1,29 @@
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
 
-public class DataAggregationGroupGroup {
+public class DA_EdgeGroups {
 	public long objID;
 	public static long objCount = 0;
 
 	public String edge_id_str = "";
 	public Vector<String> Vector_matchedLinkNrGlobal= new Vector<String>();
-	public HashMap<String, DataAggregationGroup> Groups = new HashMap<String, DataAggregationGroup>();
+	public HashMap<String, DA_DatasetGroup> Groups = new HashMap<String, DA_DatasetGroup>();
 	
-	public DataAggregationGroup SelectedDataAggregationGroup = null;
 	
-	public DataAggregationGroupGroup() {
-		this.objID = DataAggregationGroupGroup.objCount;
-		DataAggregationGroupGroup.objCount++;
+	public DA_DatasetGroup SelectedDataAggregationGroup = null;
+	
+	public DA_EdgeGroups() {
+		this.objID = DA_EdgeGroups.objCount;
+		DA_EdgeGroups.objCount++;
 	}
 	
 	public void aggregation() {
 		for( String s : Vector_matchedLinkNrGlobal ) {
-			DataAggregationGroup dag = Groups.get(s);
+			DA_DatasetGroup dag = Groups.get(s);
 			dag.aggregation();
 		}
 		
@@ -43,10 +43,10 @@ public class DataAggregationGroupGroup {
             }
         };
         
-        TreeMap<Double, DataAggregationGroup> temp_Group = new TreeMap<Double, DataAggregationGroup>(comparator);
+        TreeMap<Double, DA_DatasetGroup> temp_Group = new TreeMap<Double, DA_DatasetGroup>(comparator);
         
         for( String s : Vector_matchedLinkNrGlobal ) {
-			DataAggregationGroup dag = Groups.get(s);
+			DA_DatasetGroup dag = Groups.get(s);
 			temp_Group.put(dag.RepresentativeValue, dag);
 		}
 
@@ -64,7 +64,7 @@ public class DataAggregationGroupGroup {
 	        }
 	        
 			int i = 1;
-			for(Map.Entry<Double, DataAggregationGroup> entry : temp_Group.entrySet()) {
+			for(Map.Entry<Double, DA_DatasetGroup> entry : temp_Group.entrySet()) {
 				if (i == med_index) {
 					SelectedDataAggregationGroup = entry.getValue();
 					break;
@@ -88,7 +88,7 @@ public class DataAggregationGroupGroup {
 				
 				min = Double.MAX_VALUE;
 				
-				for(Map.Entry<Double, DataAggregationGroup> entry : temp_Group.entrySet()) {
+				for(Map.Entry<Double, DA_DatasetGroup> entry : temp_Group.entrySet()) {
 					double r = entry.getValue().RepresentativeValue;
 					double dif = m - r;
 					if (dif < 0) {dif = dif * -1.0;}
@@ -99,7 +99,6 @@ public class DataAggregationGroupGroup {
 				    }
 				}
 			}
-			
 		}
 		
 	}

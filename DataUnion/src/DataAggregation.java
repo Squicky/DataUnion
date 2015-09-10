@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class DataAggregation {
 
-	public HashMap<String, DataAggregationGroupGroup> GroupOfGroups = new HashMap<String, DataAggregationGroupGroup>();
+	public HashMap<String, DA_EdgeGroups> EdgeGroups = new HashMap<String, DA_EdgeGroups>();
 	public Vector<String> EdgeIds = new Vector<String>();
 	
 	public int countGroups = 0;
@@ -37,7 +37,7 @@ public class DataAggregation {
 			bWriter.newLine();
 			
 			for (String key : EdgeIds) {
-				DataAggregationGroupGroup gg = GroupOfGroups.get(key);
+				DA_EdgeGroups gg = EdgeGroups.get(key);
 				
 				for ( int j = 0; j < gg.SelectedDataAggregationGroup.Datasets.size(); j++) {
 					Dataset od = gg.SelectedDataAggregationGroup.Datasets.get(j);
@@ -91,10 +91,10 @@ public class DataAggregation {
 			bWriter.newLine();
 
 			for (String key : EdgeIds) {
-				DataAggregationGroupGroup gg = GroupOfGroups.get(key);
+				DA_EdgeGroups gg = EdgeGroups.get(key);
 
 				for( String s : gg.Vector_matchedLinkNrGlobal ) {
-					DataAggregationGroup g = gg.Groups.get(s);
+					DA_DatasetGroup g = gg.Groups.get(s);
 
 					bWriter.write(g.type + ",");
 					bWriter.write(g.down_up + ",");
@@ -148,32 +148,32 @@ public class DataAggregation {
 	
 	public void aggregation() {
 		for( String EdgeId : EdgeIds ) {			
-			DataAggregationGroupGroup gg = GroupOfGroups.get(EdgeId);
+			DA_EdgeGroups gg = EdgeGroups.get(EdgeId);
 			gg.aggregation();
 		}
 	}
 	
 	public void addDataset(Dataset ds) {
-		DataAggregationGroupGroup gg = this.getGroupOfGroup(ds.edge_id_str);
-		DataAggregationGroup g = getGroup(ds, gg);
+		DA_EdgeGroups gg = this.getGroupOfGroup(ds.edge_id_str);
+		DA_DatasetGroup g = getGroup(ds, gg);
 		g.Datasets.add(ds);
 		countDatasets++;
 	}
 	
-	private DataAggregationGroupGroup getGroupOfGroup (String s) {
-		if (GroupOfGroups.containsKey(s) == false) {
-			DataAggregationGroupGroup gg = new DataAggregationGroupGroup();
+	private DA_EdgeGroups getGroupOfGroup (String s) {
+		if (EdgeGroups.containsKey(s) == false) {
+			DA_EdgeGroups gg = new DA_EdgeGroups();
 			gg.edge_id_str = s;
-			GroupOfGroups.put(s, gg);
+			EdgeGroups.put(s, gg);
 			EdgeIds.add(s);
 			countEdgeIds++;
 		}
-		return GroupOfGroups.get(s);
+		return EdgeGroups.get(s);
 	}
 	
-	private DataAggregationGroup getGroup (Dataset ds, DataAggregationGroupGroup gg) {
+	private DA_DatasetGroup getGroup (Dataset ds, DA_EdgeGroups gg) {
 		if (gg.Groups.containsKey(ds.matchedLinkNrGlobal + ds.down_up) == false) {
-			DataAggregationGroup g = new DataAggregationGroup(ds);
+			DA_DatasetGroup g = new DA_DatasetGroup(ds);
 			gg.Groups.put(ds.matchedLinkNrGlobal + ds.down_up, g);
 			gg.Vector_matchedLinkNrGlobal.add(ds.matchedLinkNrGlobal + ds.down_up);
 
