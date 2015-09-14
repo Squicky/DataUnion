@@ -1,4 +1,6 @@
 
+// this class save one dataset from JXMapMatcherVer3
+
 public class Dataset {
 	public long objID;
 	public static long objCount = 0;
@@ -27,7 +29,6 @@ public class Dataset {
 	public String GSM_LAC = "";
 	public int matchedLinkNrGlobal = -1;
 	
-
 	public int CellId = -1;
 
 	public Dataset() {

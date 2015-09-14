@@ -20,6 +20,11 @@ public class DataAggregation {
 
 	public static String RepresentativeDataType = "datarate";
 	
+	/**
+	 * save datasets if aggregation was used
+	 * 
+	 * @param outputFile path of file
+	 */
 	public void writeOutput(String outputFile) {
 		try {
 			System.out.println("write  ... " + outputFile);
@@ -107,6 +112,11 @@ public class DataAggregation {
 		}
 	}
 	
+	/**
+	 * save Overview with all Repräsentanten for all Gruppen
+	 * 
+	 * @param outputFile path of file
+	 */
 	public void writeSumToFile(String filePath) {
 		
 		try {
@@ -221,6 +231,9 @@ public class DataAggregation {
 		}
 	}
 	
+	/**
+	 * start calculations of Repräsentanten for all edges and all Gruppen
+	 */
 	public void aggregation() {
 		for( String EdgeId : EdgeIds ) {			
 			DA_EdgeGroups gg = EdgeGroups.get(EdgeId);
@@ -228,6 +241,11 @@ public class DataAggregation {
 		}
 	}
 	
+	/**
+	 * add a dataset to edge / Gruppe
+	 * Start of sorting: edge --> Gruppe --> down/up
+	 * @param ds
+	 */
 	public void addDataset(Dataset ds) {
 		DA_EdgeGroups gg = this.getGroupOfGroup(ds.edge_id_str);
 		DA_DatasetGroup g = getGroup(ds, gg);
@@ -235,6 +253,10 @@ public class DataAggregation {
 		countDatasets++;
 	}
 	
+	/**
+	 * @param s edge id
+	 * @return edge with all Gruppen
+	 */
 	private DA_EdgeGroups getGroupOfGroup (String s) {
 		if (EdgeGroups.containsKey(s) == false) {
 			DA_EdgeGroups gg = new DA_EdgeGroups();
@@ -246,6 +268,11 @@ public class DataAggregation {
 		return EdgeGroups.get(s);
 	}
 	
+	/**
+	 * @param ds
+	 * @param gg
+	 * @return existing or created Gruppe for ds
+	 */
 	private DA_DatasetGroup getGroup(Dataset ds, DA_EdgeGroups gg) {
 		if (ds.down_up.equals("down")) {
 			if (gg.Groups_down.containsKey(ds.matchedLinkNrGlobal) == false) {

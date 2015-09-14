@@ -3,6 +3,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.Vector;
 
+// this class represents one "Gruppe" 
 
 public class DA_DatasetGroup {
 	public long objID;
@@ -65,6 +66,11 @@ public class DA_DatasetGroup {
 
 	public double RepresentativeValue = DEFAULT_VALUE;
 
+	/**
+	 * constructor 
+	 * 
+	 * @param ds first dataset in this "Gruppe"
+	 */
 	public DA_DatasetGroup(Dataset ds) {
 		this.objID = DA_DatasetGroup.objCount;
 		DA_DatasetGroup.objCount++;
@@ -75,6 +81,10 @@ public class DA_DatasetGroup {
 		matchedLinkNrGlobal = ds.matchedLinkNrGlobal;
 	}
 	
+	/**
+	 * remove all datasets with type "Start" and "Ende"
+	 * if Gruppe has datasets with the Real or BackD.
+	 */
 	public void filterType() {
 		boolean hasReal = false;
 		
@@ -96,6 +106,9 @@ public class DA_DatasetGroup {
 		type = Datasets.firstElement().type;
 	}
 	
+	/**
+	 * start all calculations of Repräsentanten
+	 */
 	public void aggregation() {
 		filterType();
 		setCount();
@@ -176,6 +189,9 @@ public class DA_DatasetGroup {
 		}
 	}
 	
+	/**
+	 * calculate Repräsentant Weg-Gewichtet
+	 */
 	public void setWayWeight() {
 		
 		Vector<Dataset> temp_Datasets = new Vector<Dataset>();
@@ -310,6 +326,9 @@ public class DA_DatasetGroup {
 		}
 	}
 	
+	/**
+	 * check and set counts of datasets
+	 */
 	public void setCount() {		
 		for (int i = 0; i < Datasets.size(); i++) {
 			Dataset ds = Datasets.get(i);
@@ -320,6 +339,9 @@ public class DA_DatasetGroup {
 		count = Datasets.size();
 	}
 	
+	/**
+	 * calculate Repräsentant min
+	 */
 	public void setMin() {
 		if (Datasets.size() != 0) {
 			min_datarate = Integer.MAX_VALUE;
@@ -340,6 +362,9 @@ public class DA_DatasetGroup {
 		}
 	}
 
+	/**
+	 * calculate Repräsentant max
+	 */
 	public void setMax() {
 		if (Datasets.size() != 0) {
 			max_datarate = Integer.MIN_VALUE;
@@ -366,6 +391,9 @@ public class DA_DatasetGroup {
 		}
 	}
 	
+	/**
+	 * calculate Repräsentant arithmetische Mittel
+	 */
 	public void setAvg() {
 		if (Datasets.size() != 0) {
 			avg_datarate = 0;
@@ -411,6 +439,9 @@ public class DA_DatasetGroup {
 		}
 	}
 
+	/**
+	 * calculate Standardabweichung
+	 */
 	public void setStDe() {
 		if (avg_datarate == DEFAULT_VALUE) {
 			setAvg();
@@ -464,6 +495,9 @@ public class DA_DatasetGroup {
 		}
 	}
 	
+	/**
+	 * calculate Repräsentant min_stde
+	 */
 	public void setMinStde() {
 		if (avg_datarate == DEFAULT_VALUE) {
 			setAvg();
@@ -495,6 +529,9 @@ public class DA_DatasetGroup {
 		}
 	}
 
+	/**
+	 * calculate Repräsentant max_stde
+	 */
 	public void setMaxStde() {
 		if (avg_datarate == DEFAULT_VALUE) {
 			setAvg();
@@ -526,6 +563,9 @@ public class DA_DatasetGroup {
 		}
 	}
 
+	/**
+	 * calculate Repräsentant arithmetische Mittel between min_stde and max_stde
+	 */
 	public void setAvgStde() {
 		if (Datasets.size() != 0) {
 
@@ -579,6 +619,9 @@ public class DA_DatasetGroup {
 		}
 	}
 
+	/**
+	 * calculate Repräsentant Median
+	 */
 	public void setMed() {
 		
 		if (Datasets.size() != 0) {

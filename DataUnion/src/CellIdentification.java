@@ -28,10 +28,15 @@ public class CellIdentification {
 		this.addToGroup(od);
 	}
 	
-	public boolean isInGroup(Dataset od) {
+	/**
+	 *  check if ds is in this mobile cell
+	 * @param ds
+	 * @return true if ds is in this mobile cell
+	 */
+	public boolean isInGroup(Dataset ds) {
 
-		if (this.WCDMA_Ch.equals(od.WCDMA_Ch) && this.WCDMA_SC.equals(od.WCDMA_SC) && 
-				this.GSM_CellId.equals(od.GSM_CellId) && this.GSM_LAC.equals(od.GSM_LAC)) {
+		if (this.WCDMA_Ch.equals(ds.WCDMA_Ch) && this.WCDMA_SC.equals(ds.WCDMA_SC) && 
+				this.GSM_CellId.equals(ds.GSM_CellId) && this.GSM_LAC.equals(ds.GSM_LAC)) {
 
 			double lat = max_latitude - min_latitude;
 			lat = lat / 2;
@@ -41,7 +46,7 @@ public class CellIdentification {
 			lon /= 2;
 			lon += min_longitude;
 			
-			double d = CellIdentification.getDistance(lat, lon, od.matched_latitude, od.matched_longitude);
+			double d = CellIdentification.getDistance(lat, lon, ds.matched_latitude, ds.matched_longitude);
 			
 			if ( d <= DistanceToNextCell ) {
 				return true;
@@ -53,25 +58,35 @@ public class CellIdentification {
 		return false;
 	}
 	
-	public void addToGroup(Dataset od) {
-		if (od.matched_latitude < min_latitude) {
-			min_latitude = od.matched_latitude;
+	/**
+	 * add dataset ds to this mobile cell
+	 * 
+	 * @param ds dataset to add
+	 */
+	public void addToGroup(Dataset ds) {
+		if (ds.matched_latitude < min_latitude) {
+			min_latitude = ds.matched_latitude;
 		} 
-		if (max_latitude < od.matched_latitude) {
-			max_latitude = od.matched_latitude;
+		if (max_latitude < ds.matched_latitude) {
+			max_latitude = ds.matched_latitude;
 		}
 		
-		if (od.matched_longitude < min_longitude) {
-			min_longitude = od.matched_longitude;
+		if (ds.matched_longitude < min_longitude) {
+			min_longitude = ds.matched_longitude;
 		} 
-		if (max_longitude < od.matched_longitude) {
-			max_longitude = od.matched_longitude;
+		if (max_longitude < ds.matched_longitude) {
+			max_longitude = ds.matched_longitude;
 		}
 		
-		od.CellId = CellID;
-		Datasets.add(od);
+		ds.CellId = CellID;
+		Datasets.add(ds);
 	}
 	
+	/**
+	 *  copy all datasets from cid2 to this mobiel cell
+	 * 
+	 * @param cid2
+	 */
 	public void copyDatasetsFrom(CellIdentification cid2) {
 		for (int i=0; i<cid2.Datasets.size(); i++) {
 			Dataset ds = cid2.Datasets.elementAt(i);
@@ -80,6 +95,13 @@ public class CellIdentification {
 		}
 	}
 	
+	/**
+	 * calculate the distance of two mobile cells in meters
+	 * 
+	 * @param cid1
+	 * @param cid2
+	 * @return distance in meters
+	 */
 	public static double getDistance(CellIdentification cid1, CellIdentification cid2) {
 
 		double lat1 = cid1.max_latitude - cid1.min_latitude;
@@ -101,6 +123,15 @@ public class CellIdentification {
 	    return getDistance(lat1, lon1, lat2, lon2);
 	}
 	
+	/**
+	 * calculate the distance of two GPS coordinates in meters
+	 * 
+	 * @param lat1
+	 * @param lon1
+	 * @param lat2
+	 * @param lon2
+	 * @return distance in meters
+	 */
 	public static double getDistance(double lat1, double lon1, double lat2, double lon2) {
 	    double earthRadius = 6371000; //meters
 	    double dLat = Math.toRadians(lat2-lat1);

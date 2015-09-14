@@ -41,8 +41,12 @@ public class DataUnion {
 		System.out.println(" :-) ");
 	}
 
+	/**
+	 * search and set CellId
+	 */
 	public void setSearchCellId() {
-		// search and set CellId
+		
+		// search and set CellId from datasets
 		for (int i = 0; i < Outputs.size(); i++) {
 			Output op = Outputs.get(i);
 
@@ -68,6 +72,7 @@ public class DataUnion {
 			}
 		}
 		
+		// check if mobile cell can be merged
 		boolean restart = false;
 		outer:
 		for (int i = 0; i < CellIds.size(); i++) {
@@ -100,6 +105,7 @@ public class DataUnion {
 		}
 	}
 	
+	
 	public void setMatchedLinkNrGlobal() {
 		int lastMatchedLinkNr = -1;
 		int matchedLinkNrGlobal = 0;
@@ -127,6 +133,11 @@ public class DataUnion {
 		}
 	}
 	
+	/**
+	 * save datasets if no aggregation
+	 * 
+	 * @param outputFile path of file
+	 */
 	public void writeOutput(String outputFile) {
 		try {
 			
@@ -200,6 +211,11 @@ public class DataUnion {
 		dataAggregation.aggregation();
 	}
 	
+	/**
+	 * check the arg of user
+	 * 
+	 * @param args
+	 */
 	public void checkArgs(String[] args) {
 		try {
 			for (int i = 0; i < args.length; i++) {
@@ -276,6 +292,9 @@ public class DataUnion {
 		}
 	}
 	
+	/**
+	 * print arg description for user
+	 */
 	public static void printParameterInfo() {
 		System.out.println("");
 		System.out.println("Parameter: ");
@@ -305,6 +324,9 @@ public class DataUnion {
 		System.out.println("");
 	}
 	
+	/**
+	 * check if str ist double
+	 */
 	public static boolean isDouble(String str)  
 	{
 		try {

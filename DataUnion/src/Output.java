@@ -4,10 +4,17 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
+// this class load and save the datasets from JXMapMatcherVer3
+
 public class Output {
 	
 	public Vector<Dataset> Datasets = new Vector<Dataset>();
 	
+	/**
+	 * load datasets from JXMapMatcherVer3
+	 * 
+	 * @param FilePath path of datasets from JXMapMatcherVer3
+	 */
 	public void loadFile(String FilePath) {
 		
 		Datasets.clear();

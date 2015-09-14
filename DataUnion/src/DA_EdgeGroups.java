@@ -3,6 +3,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
+//this class represents one edge save all "Gruppen" for downstream and upstream datasets
 
 public class DA_EdgeGroups {
 	public long objID;
@@ -27,6 +28,9 @@ public class DA_EdgeGroups {
 		DA_EdgeGroups.objCount++;
 	}
 	
+	/**
+	 * start calculations of Repräsentanten for all Gruppen
+	 */
 	public void aggregation() {
 		for( Integer nr : Vector_matchedLinkNrGlobal_down ) {
 			DA_DatasetGroup dag = Groups_down.get(nr);
@@ -41,6 +45,9 @@ public class DA_EdgeGroups {
 		SelectGroup();
 	}
 	
+	/**
+	 * Gruppenauswahl: Select one Gruppe 
+	 */
 	public void SelectGroup() {
 		
 		Comparator<Double> comparator = new Comparator<Double>() {
