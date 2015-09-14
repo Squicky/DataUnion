@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 
 public class CellIdentification {
 
@@ -14,6 +16,8 @@ public class CellIdentification {
 	public double max_longitude = Double.MIN_VALUE;
 
 	public static double DistanceToNextCell = 5000;
+	
+	public Vector<Dataset> Datasets = new Vector<Dataset>();
 	
 	public CellIdentification(int id, Dataset od) {
 		this.CellID = id;
@@ -65,6 +69,36 @@ public class CellIdentification {
 		}
 		
 		od.CellId = CellID;
+		Datasets.add(od);
+	}
+	
+	public void copyDatasetsFrom(CellIdentification cid2) {
+		for (int i=0; i<cid2.Datasets.size(); i++) {
+			Dataset ds = cid2.Datasets.elementAt(i);
+			
+			this.addToGroup(ds);
+		}
+	}
+	
+	public static double getDistance(CellIdentification cid1, CellIdentification cid2) {
+
+		double lat1 = cid1.max_latitude - cid1.min_latitude;
+		lat1 = lat1 / 2;
+		lat1 += cid1.min_latitude;
+		
+		double lon1 = cid1.max_longitude - cid1.min_longitude;
+		lon1 /= 2;
+		lon1 += cid1.min_longitude;
+
+		double lat2 = cid2.max_latitude - cid2.min_latitude;
+		lat2 = lat2 / 2;
+		lat2 += cid2.min_latitude;
+		
+		double lon2 = cid2.max_longitude - cid2.min_longitude;
+		lon2 /= 2;
+		lon2 += cid2.min_longitude;
+		
+	    return getDistance(lat1, lon1, lat2, lon2);
 	}
 	
 	public static double getDistance(double lat1, double lon1, double lat2, double lon2) {

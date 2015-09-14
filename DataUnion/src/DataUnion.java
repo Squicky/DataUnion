@@ -67,6 +67,36 @@ public class DataUnion {
 				}
 			}
 		}
+		
+		boolean restart = false;
+		outer:
+		for (int i = 0; i < CellIds.size(); i++) {
+			
+			if (restart) {
+				i = 0;
+			}
+			
+			for (int j = i+1; j < CellIds.size(); j++) {
+				
+				CellIdentification cid1 = CellIds.elementAt(i);
+				CellIdentification cid2 = CellIds.elementAt(j);
+				
+				if (cid1.WCDMA_Ch.equals(cid2.WCDMA_Ch) && cid1.WCDMA_SC.equals(cid2.WCDMA_SC) && 
+						cid1.GSM_CellId.equals(cid2.GSM_CellId) && cid1.GSM_LAC.equals(cid2.GSM_LAC)) {
+					
+					if (CellIdentification.getDistance(cid1, cid2) <= CellIdentification.DistanceToNextCell) {
+
+						cid1.copyDatasetsFrom(cid2);
+						
+						CellIds.remove(j);
+						
+						restart = true;
+						i = -1;
+						continue outer; 						
+					}
+				}
+			}
+		}
 	}
 	
 	public void setMatchedLinkNrGlobal() {
