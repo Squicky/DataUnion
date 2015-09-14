@@ -74,6 +74,7 @@ public class DataUnion {
 			
 			if (restart) {
 				i = 0;
+				restart = false;
 			}
 			
 			for (int j = i+1; j < CellIds.size(); j++) {
